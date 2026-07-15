@@ -1,0 +1,23 @@
+{
+  "name": "firex-backend",
+  "version": "1.0.0",
+  "description": "FireX Tournament ERP Fastify Backend",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts"
+  },
+  "dependencies": {
+    "@fastify/cors": "^8.3.0",
+    "@fastify/jwt": "^7.2.0",
+    "dotenv": "^16.6.1",
+    "fastify": "^4.21.0",
+    "mongoose": "^9.7.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.1.6"
+  }
+}
