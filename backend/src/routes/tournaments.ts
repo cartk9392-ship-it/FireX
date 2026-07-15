@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyReply } from 'fastify';
-import { TournamentModel, UserModel, RegistrationModel, TeamRegistrationModel, TransactionModel, NotificationModel } from '../store';
+import { TournamentModel, UserModel, RegistrationModel, TeamRegistrationModel, TransactionModel, NotificationModel, MatchModel, MatchResultModel } from '../store';
 
 const generateId = () => Math.random().toString(36).substr(2, 9);
 
@@ -143,6 +143,8 @@ export async function tournamentRoutes(fastify: FastifyInstance) {
     await TournamentModel.deleteOne({ id });
     await RegistrationModel.deleteOne({ tournamentId: id });
     await TeamRegistrationModel.deleteMany({ tournamentId: id });
+    await MatchModel.deleteMany({ tournamentId: id });
+    await MatchResultModel.deleteMany({ tournamentId: id });
 
     return { message: "Tournament deleted successfully" };
   });

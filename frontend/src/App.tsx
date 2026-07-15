@@ -1,11 +1,10 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-// Public pages
+// Public routes
 import Landing from './pages/Landing';
 import PlayerLogin from './pages/PlayerLogin';
 import PlayerRegister from './pages/PlayerRegister';
-import AdminLogin from './pages/AdminLogin';
 
 // Layouts
 import PlayerLayout from './layouts/PlayerLayout';
@@ -28,7 +27,6 @@ import PlayerManagement from './pages/PlayerManagement';
 import WalletManagement from './pages/WalletManagement';
 import PrizeDistribution from './pages/PrizeDistribution';
 import AdminNotifications from './pages/AdminNotifications';
-import AdminReports from './pages/AdminReports';
 import SystemSettings from './pages/SystemSettings';
 
 // 404 page
@@ -41,7 +39,6 @@ export const App: React.FC = () => {
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<PlayerLogin />} />
       <Route path="/register" element={<PlayerRegister />} />
-      <Route path="/admin/login" element={<AdminLogin />} />
 
       {/* Protected Player Routes */}
       <Route path="/player" element={<PlayerLayout />}>
@@ -65,7 +62,6 @@ export const App: React.FC = () => {
         <Route path="wallet" element={<WalletManagement />} />
         <Route path="prizes" element={<PrizeDistribution />} />
         <Route path="notifications" element={<AdminNotifications />} />
-        <Route path="reports" element={<AdminReports />} />
         <Route path="settings" element={<SystemSettings />} />
       </Route>
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  Trophy, Wallet, Calendar, ChevronRight, Swords, User, Settings 
+  Trophy, Wallet, Calendar, ChevronRight, Swords, User, Settings, Download
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import Card from '../components/Card';
@@ -47,6 +47,10 @@ export const PlayerDashboard: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // PWA Install Prompt State
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [showInstallBanner, setShowInstallBanner] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -76,7 +80,31 @@ export const PlayerDashboard: React.FC = () => {
     };
 
     fetchData();
+
+    // Listen for PWA install prompt
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallBanner(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
   }, []);
+
+  const handleInstallApp = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      console.log('User installed the PWA app');
+    }
+    setDeferredPrompt(null);
+    setShowInstallBanner(false);
+  };
 
   const upcomingTournaments = tournaments.filter(t => t.status === 'Upcoming' && t.published);
   const liveMatches = playerMatches.filter(m => m.status === 'Live');
@@ -137,6 +165,30 @@ export const PlayerDashboard: React.FC = () => {
           </div>
         </Card>
       </div>
+
+      {/* PWA Direct Download Banner */}
+      {showInstallBanner && (
+        <Card className="border border-primary/20 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 p-5 shadow-premium">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4 text-center sm:text-left">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+                <Download size={24} className="animate-bounce" />
+              </div>
+              <div>
+                <h4 className="font-extrabold text-white text-sm">Download FireX App</h4>
+                <p className="text-xs text-textGray mt-0.5">Install directly on your Home Screen for faster access and fullscreen match gameplay.</p>
+              </div>
+            </div>
+            <Button
+              onClick={handleInstallApp}
+              className="px-5 py-2 text-xs font-black orange-gradient-bg shrink-0"
+              icon={<Download size={14} />}
+            >
+              Install App
+            </Button>
+          </div>
+        </Card>
+      )}
 
       {/* Body grids */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

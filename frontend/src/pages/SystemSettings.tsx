@@ -18,6 +18,8 @@ export const SystemSettings: React.FC = () => {
   const [termsConditions, setTermsConditions] = useState('');
   const [upiId, setUpiId] = useState('');
   const [upiQrUrl, setUpiQrUrl] = useState('');
+  const [youtubeUrl, setYoutubeUrl] = useState('');
+  const [whatsappUrl, setWhatsappUrl] = useState('');
 
   const fetchSettings = async () => {
     try {
@@ -31,6 +33,8 @@ export const SystemSettings: React.FC = () => {
         setTermsConditions(data.termsConditions || '');
         setUpiId(data.upiId || '');
         setUpiQrUrl(data.upiQrUrl || '');
+        setYoutubeUrl(data.youtubeUrl || '');
+        setWhatsappUrl(data.whatsappUrl || '');
       }
     } catch (e) {
       console.error(e);
@@ -64,7 +68,9 @@ export const SystemSettings: React.FC = () => {
           privacyPolicy,
           termsConditions,
           upiId,
-          upiQrUrl
+          upiQrUrl,
+          youtubeUrl,
+          whatsappUrl
         })
       });
       const data = await res.json();
@@ -125,6 +131,29 @@ export const SystemSettings: React.FC = () => {
                     onChange={(e) => setContactEmail(e.target.value)}
                     className="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 focus:border-primary rounded-lg text-xs font-semibold text-white outline-none"
                   />
+                  <p className="text-[9px] text-textGray">Hidden in footer, opens email client dynamically on icon click</p>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] text-textGray font-bold uppercase tracking-wider block">YouTube Channel Link</label>
+                  <input
+                    type="url"
+                    placeholder="e.g. https://www.youtube.com/@channel"
+                    value={youtubeUrl}
+                    onChange={(e) => setYoutubeUrl(e.target.value)}
+                    className="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 focus:border-primary rounded-lg text-xs font-semibold text-white outline-none"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] text-textGray font-bold uppercase tracking-wider block">WhatsApp Group Link</label>
+                  <input
+                    type="url"
+                    placeholder="e.g. https://chat.whatsapp.com/..."
+                    value={whatsappUrl}
+                    onChange={(e) => setWhatsappUrl(e.target.value)}
+                    className="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 focus:border-primary rounded-lg text-xs font-semibold text-white outline-none"
+                  />
                 </div>
               </div>
             </Card>
@@ -146,14 +175,23 @@ export const SystemSettings: React.FC = () => {
                   </div>
                 )}
                 <div className="space-y-1 text-left mt-4">
-                  <label className="text-[10px] text-textGray font-bold uppercase tracking-wider block">Logo URL</label>
+                  <label className="text-[10px] text-textGray font-bold uppercase tracking-wider block">Upload Logo Image</label>
                   <input
-                    type="url"
-                    required
-                    value={logoUrl}
-                    onChange={(e) => setLogoUrl(e.target.value)}
-                    className="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 focus:border-primary rounded-lg text-xs font-semibold text-white outline-none"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                          setLogoUrl(reader.result as string);
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                    className="w-full text-xs text-textGray file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30 file:cursor-pointer bg-slate-950 border border-slate-800 rounded-lg p-2 focus:border-primary outline-none"
                   />
+                  <p className="text-[10px] text-textGray">Choose a logo image from your device to update website branding</p>
                 </div>
               </div>
             </Card>

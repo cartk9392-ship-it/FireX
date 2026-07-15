@@ -24,7 +24,7 @@ export async function settingsRoutes(fastify: FastifyInstance) {
       return reply.code(403).send({ message: "Access forbidden" });
     }
 
-    const { logoUrl, appName, contactEmail, privacyPolicy, termsConditions, upiId, upiQrUrl } = request.body as any;
+    const { logoUrl, appName, contactEmail, privacyPolicy, termsConditions, upiId, upiQrUrl, youtubeUrl, whatsappUrl } = request.body as any;
 
     let settings = await AppSettingsModel.findOne({});
     if (!settings) {
@@ -38,6 +38,8 @@ export async function settingsRoutes(fastify: FastifyInstance) {
     if (termsConditions !== undefined) settings.termsConditions = termsConditions;
     if (upiId !== undefined) settings.upiId = upiId;
     if (upiQrUrl !== undefined) settings.upiQrUrl = upiQrUrl;
+    if (youtubeUrl !== undefined) settings.youtubeUrl = youtubeUrl;
+    if (whatsappUrl !== undefined) settings.whatsappUrl = whatsappUrl;
 
     await settings.save();
     return settings;

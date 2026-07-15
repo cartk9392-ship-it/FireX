@@ -15,7 +15,7 @@ interface AuthContextType {
   user: UserProfile | null;
   token: string | null;
   loading: boolean;
-  login: (email: string, password: string, isAdmin: boolean) => Promise<{ success: boolean; message?: string }>;
+  login: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
   register: (name: string, email: string, password: string, inGameName?: string, inGameUid?: string) => Promise<{ success: boolean; message?: string }>;
   logout: () => void;
   updateWalletBalance: (newBalance: number) => void;
@@ -60,7 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [token]);
 
-  const login = async (email: string, password: string, isAdmin: boolean) => {
+  const login = async (email: string, password: string) => {
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
@@ -71,14 +71,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const data = await response.json();
       if (!response.ok) {
         return { success: false, message: data.message || "Invalid credentials" };
-      }
-
-      // Check role constraint based on target form
-      if (isAdmin && data.user.role !== 'admin') {
-        return { success: false, message: "Unauthorized login panel" };
-      }
-      if (!isAdmin && data.user.role !== 'player') {
-        return { success: false, message: "Please use the admin login page" };
       }
 
       localStorage.setItem('firex_token', data.token);

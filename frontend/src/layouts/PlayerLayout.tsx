@@ -61,11 +61,11 @@ export const PlayerLayout: React.FC = () => {
             </button>
 
             {/* Quick Profile Pill */}
-            <div className="flex items-center gap-2.5 px-3.5 py-1.5 bg-slate-950 border border-slate-800 rounded-lg">
-              <div className="w-5.5 h-5.5 rounded-full orange-gradient-bg flex items-center justify-center text-[10px] font-black text-white">
-                FF
+            <div className="flex items-center gap-2.5 px-3 py-1 bg-slate-950 border border-slate-800 rounded-full shadow-inner">
+              <div className="w-6 h-6 rounded-full overflow-hidden border border-slate-700/50 flex items-center justify-center bg-slate-900 shrink-0 shadow-md">
+                <img src="/icon-192.png" alt="Mascot Avatar" className="w-full h-full object-cover" />
               </div>
-              <span className="text-xs font-bold text-white hidden md:inline">{user.name}</span>
+              <span className="text-xs font-black tracking-wide text-white pr-2">{user.name}</span>
             </div>
           </div>
         </header>

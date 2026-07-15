@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Lock, Award, ShieldAlert } from 'lucide-react';
+import { Mail, Lock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -24,7 +24,7 @@ export const PlayerLogin: React.FC = () => {
     }
 
     setLoading(true);
-    const result = await login(email, password, false);
+    const result = await login(email, password);
     setLoading(false);
 
     if (!result.success) {
@@ -40,16 +40,16 @@ export const PlayerLogin: React.FC = () => {
       <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 text-center">
         {/* Brand */}
         <Link to="/" className="inline-flex items-center gap-2 mb-6">
-          <div className="w-9 h-9 rounded-xl orange-gradient-bg flex items-center justify-center shadow-md">
-            <Award size={18} className="text-white" />
+          <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg border border-slate-800 flex items-center justify-center bg-slate-950 shrink-0">
+            <img src="/icon-192.png" alt="FireX" className="w-full h-full object-cover" />
           </div>
           <span className="text-lg font-black uppercase tracking-tight text-white">
             Fire<span className="text-primary text-glow-orange">X</span>
           </span>
         </Link>
-        <h2 className="text-3xl font-extrabold uppercase text-white tracking-tight">Player Portal</h2>
+        <h2 className="text-3xl font-extrabold uppercase text-white tracking-tight">FireX Portal</h2>
         <p className="mt-2 text-xs text-textGray font-semibold">
-          Access your tournament wallet and game schedules
+          Access your tournament dashboard, wallet, and game schedules
         </p>
       </div>
 
@@ -92,11 +92,6 @@ export const PlayerLogin: React.FC = () => {
                 Create Account
               </Link>
             </span>
-
-            <Link to="/admin/login" className="text-red-400 hover:underline flex items-center gap-1">
-              <ShieldAlert size={12} />
-              Admin Portal
-            </Link>
           </div>
         </Card>
       </div>

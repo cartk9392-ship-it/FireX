@@ -5,7 +5,7 @@ import Button from '../components/Button';
 import Card from '../components/Card';
 import Badge from '../components/Badge';
 import { 
-  Trophy, Wallet, Flame, ChevronDown, HelpCircle, Gamepad2, Play
+  Trophy, Wallet, Flame, ChevronDown, HelpCircle, Gamepad2, Play, Mail, Youtube, MessageCircle
 } from 'lucide-react';
 
 interface Tournament {
@@ -24,10 +24,12 @@ interface Tournament {
 
 export const Landing: React.FC = () => {
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
+  const [appSettings, setAppSettings] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
 
   useEffect(() => {
+    // Fetch tournaments
     fetch('/api/tournaments')
       .then(res => res.json())
       .then(data => {
@@ -35,7 +37,15 @@ export const Landing: React.FC = () => {
           setTournaments(data.slice(0, 3)); // show top 3
         }
       })
-      .catch(err => console.error("Error fetching tournaments:", err))
+      .catch(err => console.error("Error fetching tournaments:", err));
+
+    // Fetch settings for footer social links
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data) setAppSettings(data);
+      })
+      .catch(err => console.error("Error fetching settings:", err))
       .finally(() => setLoading(false));
   }, []);
 
@@ -273,13 +283,39 @@ export const Landing: React.FC = () => {
                 Fire<span className="text-primary">X</span>
               </span>
               <p className="text-xs text-textGray mt-1.5 max-w-sm">
-                Enterprise gaming ERP system for managing, scoring, and playing Garena Free Fire brackets.
+                Independent community tournament management platform for Free Fire gaming events.
               </p>
             </div>
-            <div className="flex gap-8 text-xs font-bold uppercase tracking-wider">
-              <Link to="/login" className="hover:text-white transition">Player Login</Link>
-              <Link to="/admin/login" className="hover:text-white transition text-red-400">Admin Portal</Link>
-              <a href="#faq" className="hover:text-white transition">Support</a>
+            <div className="flex flex-col sm:items-end gap-3 text-left sm:text-right">
+              <div className="flex gap-6 text-xs font-bold uppercase tracking-wider items-center">
+                <Link to="/login" className="hover:text-white transition">Player Login</Link>
+                <a href="#faq" className="hover:text-white transition">FAQ</a>
+                <a 
+                  href={`mailto:${appSettings?.contactEmail || 'ffnunty@gmail.com'}`} 
+                  title="Contact Support" 
+                  className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-textGray hover:text-primary hover:border-primary/40 transition shadow-md shrink-0"
+                >
+                  <Mail size={15} />
+                </a>
+                <a 
+                  href={appSettings?.youtubeUrl || 'https://www.youtube.com/@fireX-Tournament'} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  title="Watch on YouTube" 
+                  className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-textGray hover:text-red-500 hover:border-red-500/40 transition shadow-md shrink-0"
+                >
+                  <Youtube size={15} />
+                </a>
+                <a 
+                  href={appSettings?.whatsappUrl || 'https://chat.whatsapp.com/Cio3IxtVMl63LqHLpiWL37?s=cl&p=a&ilr=1&amv=1'} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  title="Join WhatsApp Group" 
+                  className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-textGray hover:text-green-500 hover:border-green-500/40 transition shadow-md shrink-0"
+                >
+                  <MessageCircle size={15} />
+                </a>
+              </div>
             </div>
           </div>
           <p className="text-[11px] text-slate-600">

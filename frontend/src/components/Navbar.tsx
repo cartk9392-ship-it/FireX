@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, ShieldAlert, LogOut, Award, User } from 'lucide-react';
+import { Menu, X, LogOut, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import Button from './Button';
 
@@ -21,10 +21,9 @@ export const Navbar: React.FC = () => {
     <header className="fixed top-0 left-0 w-full z-40 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl orange-gradient-bg flex items-center justify-center shadow-lg shadow-orange-500/20">
-              <Award size={22} className="text-white animate-pulse" />
+            <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg border border-slate-800 flex items-center justify-center bg-slate-950 shrink-0">
+              <img src="/icon-192.png" alt="FireX" className="w-full h-full object-cover" />
             </div>
             <span className="text-xl font-black uppercase tracking-tight text-white">
               Fire<span className="text-primary text-glow-orange">X</span>
@@ -52,10 +51,6 @@ export const Navbar: React.FC = () => {
               </div>
             ) : (
               <>
-                <Link to="/admin/login" className="text-xs font-bold uppercase tracking-wider text-textGray hover:text-primary transition flex items-center gap-1.5 mr-3">
-                  <ShieldAlert size={14} />
-                  Admin Portal
-                </Link>
                 <Link to="/login">
                   <Button variant="outline" size="sm">Sign In</Button>
                 </Link>
@@ -127,14 +122,6 @@ export const Navbar: React.FC = () => {
                 </Link>
                 <Link to="/register" onClick={() => setIsOpen(false)}>
                   <Button className="w-full">Register Player</Button>
-                </Link>
-                <Link 
-                  to="/admin/login" 
-                  onClick={() => setIsOpen(false)}
-                  className="text-center text-xs font-bold uppercase tracking-wider text-textGray hover:text-primary py-2 transition flex items-center justify-center gap-1.5"
-                >
-                  <ShieldAlert size={14} />
-                  Admin Panel Login
                 </Link>
               </>
             )}

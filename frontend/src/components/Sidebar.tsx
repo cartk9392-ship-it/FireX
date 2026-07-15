@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, User, Swords, Shield, Wallet, Bell, Settings, LogOut,
-  Trophy, Users, CreditCard, Award, BarChart3, X
+  Trophy, Users, CreditCard, Award, X
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -40,7 +40,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ role, mobileOpen, setMobileOpe
     { label: 'Wallet Manager', path: '/admin/wallet', icon: <CreditCard size={18} /> },
     { label: 'Prize Allocator', path: '/admin/prizes', icon: <Award size={18} /> },
     { label: 'Broadcasts', path: '/admin/notifications', icon: <Bell size={18} /> },
-    { label: 'Reports', path: '/admin/reports', icon: <BarChart3 size={18} /> },
     { label: 'Settings', path: '/admin/settings', icon: <Settings size={18} /> }
   ];
 
@@ -48,11 +47,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ role, mobileOpen, setMobileOpe
 
   const sidebarContent = (
     <div className="flex flex-col h-full bg-slate-900 border-r border-slate-800">
-      {/* Top Brand Logo */}
       <div className="flex items-center justify-between px-6 py-5.5 border-b border-slate-800">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl orange-gradient-bg flex items-center justify-center shadow-md">
-            <Award size={18} className="text-white" />
+          <div className="w-9 h-9 rounded-xl overflow-hidden shadow-md flex items-center justify-center bg-slate-950 border border-slate-800 shrink-0">
+            <img src="/icon-192.png" alt="FireX" className="w-full h-full object-cover" />
           </div>
           <span className="text-lg font-black uppercase tracking-tight text-white">
             Fire<span className="text-primary text-glow-orange">X</span> <span className="text-[10px] bg-slate-800 text-textGray px-1.5 py-0.5 rounded ml-1 font-bold tracking-widest">{role.toUpperCase()}</span>

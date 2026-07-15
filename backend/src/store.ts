@@ -200,7 +200,9 @@ const AppSettingsSchema = new Schema<AppSettings & Document>({
   privacyPolicy: { type: String, required: true },
   termsConditions: { type: String, required: true },
   upiId: { type: String, default: "" },
-  upiQrUrl: { type: String, default: "" }
+  upiQrUrl: { type: String, default: "" },
+  youtubeUrl: { type: String, default: "" },
+  whatsappUrl: { type: String, default: "" }
 });
 
 // User Registrations mapping schema (tournamentId -> User IDs array)
@@ -224,18 +226,43 @@ export const RegistrationModel = mongoose.model('Registration', RegistrationSche
 export async function seedDatabase() {
   try {
     // Check Settings
-    const settingsCount = await AppSettingsModel.countDocuments();
-    if (settingsCount === 0) {
-      await AppSettingsModel.create({
-        logoUrl: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop",
+    let settings = await AppSettingsModel.findOne({});
+    if (!settings) {
+      settings = await AppSettingsModel.create({
+        logoUrl: "/icon-512.png",
         appName: "FireX ERP",
-        contactEmail: "support@firex-erp.com",
+        contactEmail: "ffnunty@gmail.com",
         privacyPolicy: "This privacy policy explains how FireX ERP processes and protects user data.",
         termsConditions: "By using the FireX ERP platform, users agree to follow professional competitive ethics.",
         upiId: "",
-        upiQrUrl: ""
+        upiQrUrl: "",
+        youtubeUrl: "https://www.youtube.com/@fireX-Tournament",
+        whatsappUrl: "https://chat.whatsapp.com/Cio3IxtVMl63LqHLpiWL37?s=cl&p=a&ilr=1&amv=1"
       });
       console.log("✅ Seeded default Application Settings");
+    } else {
+      let changed = false;
+      if (settings.logoUrl.includes("unsplash.com")) {
+        settings.logoUrl = "/icon-512.png";
+        changed = true;
+      }
+      if (settings.contactEmail === "support@firex-erp.com") {
+        settings.contactEmail = "ffnunty@gmail.com";
+        changed = true;
+      }
+      if (!settings.youtubeUrl) {
+        settings.youtubeUrl = "https://www.youtube.com/@fireX-Tournament";
+        changed = true;
+      }
+      if (!settings.whatsappUrl) {
+        settings.whatsappUrl = "https://chat.whatsapp.com/Cio3IxtVMl63LqHLpiWL37?s=cl&p=a&ilr=1&amv=1";
+        changed = true;
+      }
+
+      if (changed) {
+        await settings.save();
+        console.log("✅ Automatically updated app settings with PWA links, youtube, and whatsapp defaults");
+      }
     }
 
     // Check default Super Admin
